@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, connect } from 'mongoose'
+import mongoose from 'mongoose'
 
 export type TOrder = {
   email: string

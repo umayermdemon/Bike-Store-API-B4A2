@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { TProduct } from './product.interface'
 
 const productSchema = new Schema<TProduct>(
@@ -17,3 +17,5 @@ const productSchema = new Schema<TProduct>(
   },
   { timestamps: true },
 )
+
+const Product = model<TProduct>('Product', productSchema)
