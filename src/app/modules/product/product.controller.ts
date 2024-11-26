@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { ProductServices } from "./product.service";
 
@@ -12,8 +13,12 @@ const createAProduct = async (req: Request, res: Response) => {
       success: true,
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to created bike",
+      status: false,
+      error: error.message,
+    });
   }
 };
 
@@ -26,8 +31,12 @@ const getAllProducts = async (req: Request, res: Response) => {
       success: true,
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to get all bike",
+      status: false,
+      error: error.message,
+    });
   }
 };
 
@@ -41,8 +50,12 @@ const getSingleProduct = async (req: Request, res: Response) => {
       success: true,
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to get bike",
+      status: false,
+      error: error.message,
+    });
   }
 };
 
@@ -56,13 +69,43 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
       success: true,
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to deleted bike",
+      status: false,
+      error: error.message,
+    });
   }
 };
+
+// update single products
+const updateSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const updates = req.body;
+    const result = await ProductServices.updateSingleProductFromDb(
+      productId,
+      updates,
+    );
+
+    res.status(200).json({
+      message: "Product updated Successfully",
+      success: true,
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to updated bike",
+      status: false,
+      error: error.message,
+    });
+  }
+};
+
 export const ProductControllers = {
   createAProduct,
   getAllProducts,
   getSingleProduct,
   deleteSingleProduct,
+  updateSingleProduct,
 };

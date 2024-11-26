@@ -24,10 +24,25 @@ const getSingleProductFromDb = async (productId: string) => {
 
 // delete single product
 const deleteSingleProductFromDb = async (productId: string) => {
-  const result = await Product.deleteOne({
-    _id: new mongoose.Types.ObjectId(productId),
-  });
+  const result = await Product.deleteOne({ _id: productId });
   return result;
+};
+
+// update single product
+const updateSingleProductFromDb = async (
+  productId: string,
+  updates: Partial<typeof Product>,
+) => {
+  const result = await Product.updateOne({ _id: productId }, updates, {
+    runValidators: true,
+  });
+  if (result.modifiedCount === 0) {
+    throw new Error("Product not found or no changes made");
+  }
+
+  const updatedResult = await Product.findById(productId);
+
+  return updatedResult;
 };
 
 export const ProductServices = {
@@ -35,4 +50,5 @@ export const ProductServices = {
   getAllProductsFromDb,
   getSingleProductFromDb,
   deleteSingleProductFromDb,
+  updateSingleProductFromDb,
 };
