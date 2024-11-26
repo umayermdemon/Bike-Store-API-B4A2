@@ -1,5 +1,12 @@
 import express from "express";
+import { OrderControllers } from "./order.controller";
 
 const router = express.Router();
 
-router.post("/api/orders");
+// create order
+router.post("/", OrderControllers.createOrder);
+
+// get revenue
+router.get("/revenue", OrderControllers.calculateRevenue);
+
+export const OrderRoutes = router;
