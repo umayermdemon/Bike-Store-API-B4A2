@@ -1,16 +1,51 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from "mongoose";
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
+import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
+import QueryBuilder from "../../builder/QueryBuilder";
+import { productSearchableFields } from "./product.const";
 
 // create a product
-const createProductIntoDb = async (product: TProduct) => {
-  const result = Product.create(product);
-  return result;
+const createProductIntoDb = async (file: any, payload: TProduct) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    // create a user[transaction-1]
+
+    const imageName = payload.name;
+    const { secure_url }: any = await sendImageToCloudinary(
+      imageName,
+      file?.path,
+    );
+    payload.productImage = secure_url;
+
+    // create a student [transaction-2]
+    const newProduct = await Product.create([payload], { session });
+    if (!newProduct.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed to create product");
+    }
+    await session.commitTransaction();
+    await session.endSession();
+    return newProduct;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new AppError(httpStatus.BAD_REQUEST, err);
+  }
 };
 
 // get all product
-const getAllProductsFromDb = async () => {
-  const result = await Product.find();
+const getAllProductsFromDb = async (query: Record<string, unknown>) => {
+  const productQuery = new QueryBuilder(Product.find(), query)
+    .search(productSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  const result = await productQuery.queryModel;
   return result;
 };
 

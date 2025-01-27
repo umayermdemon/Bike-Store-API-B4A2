@@ -1,10 +1,22 @@
-import express from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { ProductControllers } from "./product.controller";
+import { upload } from "../../utils/sendImageToCloudinary";
+import validateRequest from "../../middlewares/validateRequest";
+import { productValidations } from "./product.validation";
 
-const router = express.Router();
+const router = Router();
 
 // create products
-router.post("/", ProductControllers.createAProduct);
+router.post(
+  "/",
+  upload.single("file"),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    next();
+  },
+  validateRequest(productValidations.createProductValidationSchema),
+  ProductControllers.createAProduct,
+);
 
 // get all products
 router.get("/", ProductControllers.getAllProducts);
