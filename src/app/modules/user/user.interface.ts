@@ -3,4 +3,5 @@ export type TRegisterUser = {
   email: string;
   password: string;
   role: "customer" | "admin";
+  userImage?: string;
 };

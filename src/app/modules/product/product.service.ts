@@ -17,8 +17,8 @@ const createProductIntoDb = async (file: any, payload: TProduct) => {
 
     const imageName = payload.name;
     const { secure_url }: any = await sendImageToCloudinary(
-      imageName,
       file?.path,
+      imageName,
     );
     payload.productImage = secure_url;
 

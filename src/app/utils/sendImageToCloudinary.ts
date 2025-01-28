@@ -5,8 +5,8 @@ import fs from "fs";
 import config from "../config";
 import AppError from "../errors/AppError";
 export const sendImageToCloudinary = async (
-  imageName: string,
   path: string,
+  imageName: string,
 ) => {
   // Configuration
   cloudinary.config({
