@@ -1,9 +1,9 @@
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { AuthServices } from "./auth.service";
+import { AuthServices } from "./user.service";
 
-const login = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUser(req.body);
+const registerUser = catchAsync(async (req, res) => {
+  const result = await AuthServices.registerUserIntoDb(req.body);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -12,4 +12,4 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
-export const AuthControllers = { login };
+export const AuthControllers = { registerUser };

@@ -1,9 +1,9 @@
-import { TRegisterUser } from "./auth.interface";
-import { Register } from "./auth.model";
+import { RegisteredUser } from "../user/user.model";
+import { TLogin } from "./auth.interface";
 
-const registerUserIntoDb = async (payload: TRegisterUser) => {
-  const result = await Register.create(payload);
+const loginUser = async (payload: TLogin) => {
+  const result = await RegisteredUser.create(payload);
   return result;
 };
 
-export const AuthServices = { registerUserIntoDb };
+export const AuthServices = { loginUser };

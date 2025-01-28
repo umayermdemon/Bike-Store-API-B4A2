@@ -1,14 +1,14 @@
 import { Router } from "express";
 import validateRequest from "../../middlewares/validateRequest";
-import { authValidations } from "./auth.validation";
-import { AuthControllers } from "./auth.controller";
+import { authValidations } from "./user.validation";
+import { AuthControllers } from "./user.controller";
 
 const router = Router();
 
 router.post(
-  "/login",
+  "/register",
   validateRequest(authValidations.registerUserValidationSchema),
-  AuthControllers.login,
+  AuthControllers.registerUser,
 );
 
-export const AuthRoutes = router;
+export const UserRoutes = router;

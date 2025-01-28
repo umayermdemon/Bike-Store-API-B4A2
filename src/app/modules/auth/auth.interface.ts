@@ -1,6 +1,4 @@
-export type TRegisterUser = {
-  name: string;
+export type TLogin = {
   email: string;
   password: string;
-  role: "customer" | "admin";
 };
