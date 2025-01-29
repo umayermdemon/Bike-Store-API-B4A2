@@ -3,12 +3,14 @@ import { ProductControllers } from "./product.controller";
 import { upload } from "../../utils/sendImageToCloudinary";
 import validateRequest from "../../middlewares/validateRequest";
 import { productValidations } from "./product.validation";
+import auth from "../../middlewares/auth";
 
 const router = Router();
 
 // create products
 router.post(
   "/",
+  auth("admin"),
   upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);

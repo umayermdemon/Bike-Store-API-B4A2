@@ -1,11 +1,12 @@
 import { z } from "zod";
 
-const registerUserValidationSchema = z.object({
+const loginUserValidationSchema = z.object({
   body: z.object({
-    name: z.string(),
     email: z.string(),
     password: z.string(),
   }),
 });
 
-export const authValidations = { registerUserValidationSchema };
+export const authValidations = {
+  loginUserValidationSchema,
+};

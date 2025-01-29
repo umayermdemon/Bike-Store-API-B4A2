@@ -1,15 +1,25 @@
+import config from "../../config";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { AuthServices } from "./auth.service";
 
-const login = catchAsync(async (req, res) => {
+const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
+  const { accessToken, refreshToken } = result;
+  if (refreshToken) {
+    res.cookie("refreshToken", refreshToken, {
+      secure: config.NODE_ENV === "production",
+      httpOnly: true,
+    });
+  }
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "User registration successful",
-    data: result,
+    message: "User logged in successful",
+    data: {
+      accessToken,
+    },
   });
 });
 
-export const AuthControllers = { login };
+export const AuthControllers = { loginUser };

@@ -8,4 +8,4 @@ const registerUserValidationSchema = z.object({
   }),
 });
 
-export const authValidations = { registerUserValidationSchema };
+export const userValidations = { registerUserValidationSchema };

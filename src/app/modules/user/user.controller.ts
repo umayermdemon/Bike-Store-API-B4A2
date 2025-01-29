@@ -1,9 +1,9 @@
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { AuthServices } from "./user.service";
+import { UserServices } from "./user.service";
 
 const registerUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.registerUserIntoDb(req?.file, req.body);
+  const result = await UserServices.registerUserIntoDb(req?.file, req.body);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -11,5 +11,15 @@ const registerUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getUser = catchAsync(async (req, res) => {
+  const email = req.params.email;
+  const result = await UserServices.getUserFromDb(email);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User is retrieved successful",
+    data: result,
+  });
+});
 
-export const AuthControllers = { registerUser };
+export const UserControllers = { registerUser, getUser };

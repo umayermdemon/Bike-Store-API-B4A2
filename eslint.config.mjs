@@ -21,17 +21,13 @@ export default [
   {
     ignores: ["node_modules", "dist"],
     rules: {
+      eqeqeq: "off",
       "no-unused-vars": "error",
-      "no-unused-expressions": "error",
-      "prefer-const": "error",
+      "prefer-const": ["error", { ignoreReadBeforeAssign: true }],
       "no-console": "warn",
+      "no-unused-expressions": "error",
       "no-undef": "error",
-      "prettier/prettier": [
-        "error",
-        {
-          endOfLine: "auto",
-        },
-      ],
+      "@typescript-eslint/no-explicit-any": "warn",
     },
   },
 ];

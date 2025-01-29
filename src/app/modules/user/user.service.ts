@@ -16,5 +16,9 @@ const registerUserIntoDb = async (file: any, payload: TRegisterUser) => {
   }
   return newUser;
 };
+const getUserFromDb = async (email: string) => {
+  const result = await RegisteredUser.findOne({ email: email });
+  return result;
+};
 
-export const AuthServices = { registerUserIntoDb };
+export const UserServices = { registerUserIntoDb, getUserFromDb };

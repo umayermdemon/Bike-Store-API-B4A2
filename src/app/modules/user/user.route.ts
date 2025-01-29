@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
 import validateRequest from "../../middlewares/validateRequest";
-import { authValidations } from "./user.validation";
-import { AuthControllers } from "./user.controller";
+import { UserControllers } from "./user.controller";
 import { upload } from "../../utils/sendImageToCloudinary";
+import { userValidations } from "./user.validation";
 
 const router = Router();
 
@@ -13,8 +13,9 @@ router.post(
     req.body = JSON.parse(req.body.data);
     next();
   },
-  validateRequest(authValidations.registerUserValidationSchema),
-  AuthControllers.registerUser,
+  validateRequest(userValidations.registerUserValidationSchema),
+  UserControllers.registerUser,
 );
+router.get("/:email", UserControllers.getUser);
 
 export const UserRoutes = router;
