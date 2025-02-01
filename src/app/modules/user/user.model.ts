@@ -8,7 +8,7 @@ const registrationSchema = new Schema<TRegisterUser>(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["customer", "admin"], default: "customer" },
+    role: { type: String, enum: ["Customer", "Admin"], default: "Customer" },
     userImage: { type: String },
   },
   {

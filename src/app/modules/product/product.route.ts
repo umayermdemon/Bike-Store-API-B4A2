@@ -10,7 +10,7 @@ const router = Router();
 // create products
 router.post(
   "/",
-  auth("admin"),
+  auth("Admin"),
   upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);

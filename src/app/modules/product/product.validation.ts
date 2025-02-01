@@ -9,7 +9,7 @@ const createProductValidationSchema = z.object({
       category: z.enum(["Mountain", "Road", "Hybrid", "Electric"]),
       description: z.string(),
       quantity: z.number(),
-      inStock: z.boolean(),
+      inStock: z.boolean().optional(),
     }),
   }),
 });

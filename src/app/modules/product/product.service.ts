@@ -20,6 +20,10 @@ const createProductIntoDb = async (file: any, payload: TProduct) => {
       file?.path,
       imageName,
     );
+    const quantity = payload?.quantity;
+    if (quantity >= 0) {
+      payload.inStock = false;
+    }
     payload.productImage = secure_url;
 
     // create a student [transaction-2]
@@ -46,7 +50,11 @@ const getAllProductsFromDb = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
   const result = await productQuery.queryModel;
-  return result;
+  const meta = await productQuery.countTotal();
+  return {
+    result,
+    meta,
+  };
 };
 
 // get single product

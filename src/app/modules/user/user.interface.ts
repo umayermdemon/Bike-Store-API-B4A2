@@ -4,7 +4,7 @@ export type TRegisterUser = {
   name: string;
   email: string;
   password: string;
-  role: "customer" | "admin";
+  role: "Customer" | "Admin";
   userImage?: string;
 };
 export type TUerRole = keyof typeof User_Role;
