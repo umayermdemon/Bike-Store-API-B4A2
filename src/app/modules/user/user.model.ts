@@ -10,6 +10,11 @@ const registrationSchema = new Schema<TRegisterUser>(
     password: { type: String, required: true },
     role: { type: String, enum: ["Customer", "Admin"], default: "Customer" },
     userImage: { type: String },
+    status: {
+      type: String,
+      enum: ["active", "deactivate"],
+      default: "active",
+    },
   },
   {
     timestamps: true,

@@ -1,4 +1,3 @@
-import { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import AppError from "../errors/AppError";
 import { verifyToken } from "../modules/auth/auth.utils";
@@ -23,7 +22,7 @@ const auth = (...requiredRoles: TUerRole[]) => {
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized");
     }
-    req.user = decoded as JwtPayload;
+    req.user = user;
     next();
   });
 };

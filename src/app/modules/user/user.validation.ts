@@ -7,5 +7,13 @@ const registerUserValidationSchema = z.object({
     password: z.string(),
   }),
 });
+const updateUserStatusValidationSchema = z.object({
+  body: z.object({
+    status: z.enum(["active", "deactivate"]),
+  }),
+});
 
-export const userValidations = { registerUserValidationSchema };
+export const userValidations = {
+  registerUserValidationSchema,
+  updateUserStatusValidationSchema,
+};

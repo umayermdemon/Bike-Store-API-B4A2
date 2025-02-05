@@ -16,6 +16,13 @@ router.post(
   validateRequest(userValidations.registerUserValidationSchema),
   UserControllers.registerUser,
 );
+router.get("/", UserControllers.getAllUser);
 router.get("/:email", UserControllers.getUser);
+router.patch(
+  "/:id",
+  // auth("Admin"),
+  validateRequest(userValidations.updateUserStatusValidationSchema),
+  UserControllers.updateUser,
+);
 
 export const UserRoutes = router;

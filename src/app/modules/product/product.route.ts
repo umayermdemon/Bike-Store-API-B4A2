@@ -9,7 +9,7 @@ const router = Router();
 
 // create products
 router.post(
-  "/",
+  "/create-product",
   auth("Admin"),
   upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {

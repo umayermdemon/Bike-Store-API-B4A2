@@ -15,4 +15,11 @@ export default {
   access_token_expires_in: process.env.ACCESS_TOKEN_EXPIRES_IN,
   refresh_token_secret: process.env.REFRESH_TOKEN_SECRET,
   refresh_token_expires_in: process.env.REFRESH_TOKEN_EXPIRES_IN,
+  sp: {
+    sp_endpoint: process.env.SP_ENDPOINT,
+    sp_username: process.env.SP_USERNAME,
+    sp_password: process.env.SP_PASSWORD,
+    sp_prefix: process.env.SP_PREFIX,
+    sp_return_url: process.env.SP_RETURN_URL,
+  },
 };

@@ -16,9 +16,34 @@ const registerUserIntoDb = async (file: any, payload: TRegisterUser) => {
   }
   return newUser;
 };
+const getAllUserFromDb = async () => {
+  const result = await RegisteredUser.find();
+  return result;
+};
 const getUserFromDb = async (email: string) => {
   const result = await RegisteredUser.findOne({ email: email });
   return result;
 };
+const updateUserStatusIntoDb = async (
+  id: string,
+  payload: { status: string },
+) => {
+  const user = await RegisteredUser.findById(id);
+  if (user?.role === "Admin") {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      `${user?.role} status not changeable`,
+    );
+  }
+  const result = await RegisteredUser.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  return result;
+};
 
-export const UserServices = { registerUserIntoDb, getUserFromDb };
+export const UserServices = {
+  registerUserIntoDb,
+  getUserFromDb,
+  getAllUserFromDb,
+  updateUserStatusIntoDb,
+};

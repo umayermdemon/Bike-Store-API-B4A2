@@ -6,5 +6,6 @@ export type TRegisterUser = {
   password: string;
   role: "Customer" | "Admin";
   userImage?: string;
+  status: "active" | "deactivate";
 };
 export type TUerRole = keyof typeof User_Role;

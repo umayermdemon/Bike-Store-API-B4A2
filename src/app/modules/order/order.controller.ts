@@ -1,52 +1,58 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from "express";
 import { OrderServices } from "./order.service";
+import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/catchAsync";
 
 // create a order
-const createOrder = async (req: Request, res: Response) => {
-  try {
-    const { email, product, quantity, totalPrice } = req.body;
-
-    const result = await OrderServices.createOrderIntoDb(
-      email,
-      product,
-      quantity,
-      totalPrice,
-    );
-
-    res.status(200).json({
-      message: "Order created successfully",
-      status: true,
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      message: "Failed to place order",
-      status: false,
-      error: error.message,
-    });
-  }
-};
+const createOrder = catchAsync(async (req, res) => {
+  console.log(req.body);
+  const result = await OrderServices.createOrderIntoDb(
+    req.body,
+    req.ip!,
+    req?.user,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Order created successfully",
+    data: result,
+  });
+});
+// get all order
+const getAllOrder = catchAsync(async (req, res) => {
+  const result = await OrderServices.getAllOrderFromDb();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Order are retrieved successfully",
+    data: result,
+  });
+});
+// Verify Payment
+const verifyPayment = catchAsync(async (req, res) => {
+  const result = await OrderServices.verifyPayment(
+    req.query.order_id as string,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Payment verified",
+    data: result,
+  });
+});
 
 // calculate revenue
-const calculateRevenue = async (req: Request, res: Response) => {
-  try {
-    const totalRevenue = await OrderServices.calculateRevenueFromOrder();
-
-    res.status(200).json({
-      message: "Revenue calculated successfully",
-      status: true,
-      data: { totalRevenue },
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      message: "Failed to calculate revenue",
-      status: false,
-      error: error.message,
-    });
-  }
-};
+const calculateRevenue = catchAsync(async (req, res) => {
+  const totalRevenue = await OrderServices.calculateRevenueFromOrder();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Revenue calculated successfully",
+    data: { totalRevenue },
+  });
+});
 export const OrderControllers = {
   createOrder,
   calculateRevenue,
+  verifyPayment,
+  getAllOrder,
 };

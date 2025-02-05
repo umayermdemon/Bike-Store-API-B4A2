@@ -21,10 +21,12 @@ const createProductIntoDb = async (file: any, payload: TProduct) => {
       imageName,
     );
     const quantity = payload?.quantity;
-    if (quantity >= 0) {
+    if (quantity <= 0) {
       payload.inStock = false;
     }
     payload.productImage = secure_url;
+    const priceInBDT = payload.price * 110;
+    payload.price = priceInBDT;
 
     // create a student [transaction-2]
     const newProduct = await Product.create([payload], { session });

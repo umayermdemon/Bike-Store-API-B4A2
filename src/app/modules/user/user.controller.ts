@@ -11,6 +11,15 @@ const registerUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getAllUser = catchAsync(async (req, res) => {
+  const result = await UserServices.getAllUserFromDb();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Users are retrieved successful",
+    data: result,
+  });
+});
 const getUser = catchAsync(async (req, res) => {
   const email = req.params.email;
   const result = await UserServices.getUserFromDb(email);
@@ -21,5 +30,20 @@ const getUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const updateUser = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await UserServices.updateUserStatusIntoDb(id, req.body);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User deactivated successful",
+    data: result,
+  });
+});
 
-export const UserControllers = { registerUser, getUser };
+export const UserControllers = {
+  registerUser,
+  getUser,
+  getAllUser,
+  updateUser,
+};
