@@ -18,10 +18,10 @@ const createOrderIntoDb = async (
   try {
     session.startTransaction();
     const product = await Product.findById(productId).session(session);
-    if (user?.role === "Admin") {
+    if (user?.status === "deactivate") {
       throw new AppError(
         httpStatus.BAD_REQUEST,
-        `${user?.role} can't place order`,
+        `${user?.name} is deactivated user`,
       );
     }
 
@@ -87,10 +87,10 @@ const createOrderIntoDb = async (
     await session.endSession();
 
     return payment.checkout_url;
-  } catch (error) {
+  } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();
-    console.log(error);
+    throw new AppError(httpStatus.BAD_REQUEST, error);
   }
 };
 const verifyPayment = async (order_id: string) => {
@@ -116,7 +116,7 @@ const verifyPayment = async (order_id: string) => {
             paymentStatus === "Success"
               ? "paid"
               : paymentStatus === "Failed"
-                ? "pending"
+                ? "failed"
                 : paymentStatus === "Cancel"
                   ? "canceled"
                   : "",
@@ -160,15 +160,20 @@ const verifyPayment = async (order_id: string) => {
     await session.commitTransaction();
     await session.endSession();
     return verifiedPayment;
-  } catch (error) {
+  } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();
-    console.log(error);
+    throw new AppError(httpStatus.BAD_REQUEST, error);
   }
 };
 // get orders
 const getAllOrderFromDb = async () => {
-  const result = await Order.find();
+  const result = await Order.find().populate("productId");
+  return result;
+};
+// get orders
+const getAllOrderByEmailFromDb = async (email: string) => {
+  const result = await Order.find({ email: email }).populate("productId");
   return result;
 };
 // calculate revenue
@@ -190,4 +195,5 @@ export const OrderServices = {
   calculateRevenueFromOrder,
   verifyPayment,
   getAllOrderFromDb,
+  getAllOrderByEmailFromDb,
 };

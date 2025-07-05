@@ -4,7 +4,6 @@ import catchAsync from "../../utils/catchAsync";
 
 // create a order
 const createOrder = catchAsync(async (req, res) => {
-  console.log(req.body);
   const result = await OrderServices.createOrderIntoDb(
     req.body,
     req.ip!,
@@ -20,6 +19,17 @@ const createOrder = catchAsync(async (req, res) => {
 // get all order
 const getAllOrder = catchAsync(async (req, res) => {
   const result = await OrderServices.getAllOrderFromDb();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Order are retrieved successfully",
+    data: result,
+  });
+});
+// get  order by email
+const getAllOrderByEmail = catchAsync(async (req, res) => {
+  const email = req.params.email;
+  const result = await OrderServices.getAllOrderByEmailFromDb(email);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -55,4 +65,5 @@ export const OrderControllers = {
   calculateRevenue,
   verifyPayment,
   getAllOrder,
+  getAllOrderByEmail,
 };

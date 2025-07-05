@@ -5,7 +5,7 @@ export type TOrder = {
   productId: mongoose.Types.ObjectId;
   quantity: number;
   totalPrice: number;
-  status: "pending" | "paid" | "shipped" | "completed" | "canceled";
+  status: "pending" | "paid" | "shipped" | "completed" | "canceled" | "failed";
   shippingDetails: {
     customer_phone: string;
     customer_address: string;

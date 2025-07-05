@@ -16,6 +16,8 @@ router.post(
 
 // get all order
 router.get("/", OrderControllers.getAllOrder);
+// get all order
+router.get("/customer/:email", OrderControllers.getAllOrderByEmail);
 // verify payment
 router.get("/verify", OrderControllers.verifyPayment);
 // get revenue
